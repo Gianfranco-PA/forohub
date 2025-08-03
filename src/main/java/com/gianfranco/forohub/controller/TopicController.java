@@ -3,8 +3,12 @@ package com.gianfranco.forohub.controller;
 import com.gianfranco.forohub.dto.TopicDTO;
 import com.gianfranco.forohub.service.TopicService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,27 +22,39 @@ public class TopicController {
     }
 
     @GetMapping
-    public List<TopicDTO> findAll() {
-        return topicService.findAll();
+    public ResponseEntity<List<TopicDTO>> findAll() {
+        List<TopicDTO> list = topicService.findAll();
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}")
-    public TopicDTO findById(@PathVariable Long id) {
-        return topicService.findById(id);
+    public ResponseEntity<TopicDTO> findById(@PathVariable Long id) {
+        TopicDTO dto = topicService.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public TopicDTO save(@RequestBody @Valid TopicDTO topicDTO) {
-        return topicService.save(topicDTO);
+    public ResponseEntity<TopicDTO> save(@RequestBody @Valid TopicDTO topicDTO) {
+        TopicDTO saved = topicService.save(topicDTO);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(saved.id())
+                .toUri();
+        return ResponseEntity
+                .created(location)
+                .body(saved);
     }
 
     @PutMapping("/{id}")
-    public TopicDTO update(@PathVariable Long id,@RequestBody @Valid TopicDTO topicDTO) {
-        return topicService.update(id, topicDTO);
+    public ResponseEntity<TopicDTO> update(@PathVariable Long id, @RequestBody @Valid TopicDTO topicDTO) {
+        TopicDTO updated = topicService.update(id, topicDTO);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         topicService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

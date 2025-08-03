@@ -1,5 +1,6 @@
 package com.gianfranco.forohub.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gianfranco.forohub.model.Status;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +8,8 @@ import jakarta.validation.constraints.Size;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record TopicDTO (
+        @JsonIgnore
+        Long id,
         @NotBlank(message = "El título es obligatorio")
         @Size(max = 100, message = "El título no debe exceder 100 caracteres")
         String title,

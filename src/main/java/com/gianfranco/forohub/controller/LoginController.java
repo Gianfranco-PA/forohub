@@ -1,8 +1,10 @@
 package com.gianfranco.forohub.controller;
 
 import com.gianfranco.forohub.config.JwtUtil;
-import com.gianfranco.forohub.dto.UsernamePasswordAuthenticationToken;
+import com.gianfranco.forohub.dto.AuthRequestDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +27,16 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public Map<String,String> login(@RequestBody UsernamePasswordAuthenticationToken req){
-        Authentication a = am.authenticate(
-                new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(req.username(),req.password()));
-        String token = jwt.generateToken((UserDetails)a.getPrincipal());
-        return Map.of("token", token);
+    public ResponseEntity<Map<String, String>> login(@RequestBody AuthRequestDTO req) {
+
+        Authentication authentication = am.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        req.username(), req.password()
+                )
+        );
+
+        String token = jwt.generateToken((UserDetails) authentication.getPrincipal());
+        Map<String,String> body = Map.of("token", token);
+        return ResponseEntity.ok(body);
     }
 }

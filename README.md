@@ -14,8 +14,11 @@ Aplicación sencilla para gestionar **topics**: crear, consultar, actualizar y e
     * `course` (String)
     * `createdAt` (LocalDateTime)
 * Persistencia vía Spring Data JPA
+* Migraciones controladas con Flyway
 
 ### Endpoints
+
+#### Topics
 
 Base URL: `{{host}}/api/topic`
 
@@ -27,23 +30,31 @@ Base URL: `{{host}}/api/topic`
 | PUT    | `/{id}` | Actualiza un topic existente |
 | DELETE | `/{id}` | Elimina un topic por su ID   |
 
+#### Autenticación
+
+Base URL: `{{host}}/api/auth`
+
+| Método | Ruta     | Descripción                         |
+| ------ | -------- | ----------------------------------- |
+| POST   | `/login` | Autentica usuario y devuelve el JWT |
+
 ### Ejemplos en Postman
 
 1. **Listar todos**
 
-    * **Método**: GET
-    * **URL**: `{{host}}/api/topic`
+    * Método: GET
+    * URL: `{{host}}/api/topic`
 
 2. **Obtener por ID**
 
-    * **Método**: GET
-    * **URL**: `{{host}}/api/topic/1`
+    * Método: GET
+    * URL: `{{host}}/api/topic/1`
 
 3. **Crear un topic**
 
-    * **Método**: POST
-    * **URL**: `{{host}}/api/topic`
-    * **Body (raw JSON)**:
+    * Método: POST
+    * URL: `{{host}}/api/topic`
+    * Body:
 
       ```json
       {
@@ -57,9 +68,9 @@ Base URL: `{{host}}/api/topic`
 
 4. **Actualizar un topic**
 
-    * **Método**: PUT
-    * **URL**: `{{host}}/api/topic/1`
-    * **Body (raw JSON)**:
+    * Método: PUT
+    * URL: `{{host}}/api/topic/1`
+    * Body:
 
       ```json
       {
@@ -73,5 +84,20 @@ Base URL: `{{host}}/api/topic`
 
 5. **Eliminar un topic**
 
-    * **Método**: DELETE
-    * **URL**: `{{host}}/api/topic/1`
+    * Método: DELETE
+    * URL: `{{host}}/api/topic/1`
+
+6. **Login**
+
+    * Método: POST
+    * URL: `{{host}}/api/auth/login`
+    * Body:
+
+      ```json
+      {
+        "username": "FOROHUB",
+        "password": "123456"
+      }
+      ```
+
+> **Cuenta de ejemplo**: `username=FOROHUB`, `password=123456`

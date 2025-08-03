@@ -8,11 +8,12 @@ import org.springframework.stereotype.Component;
 public class TopicMapper {
 
     public TopicDTO toTopicDTO(Topic topic) {
-        return new TopicDTO(topic.getTitle(), topic.getMessage(), topic.getStatus(), topic.getAuthor(), topic.getCourse());
+        return new TopicDTO(topic.getId(),topic.getTitle(), topic.getMessage(), topic.getStatus(), topic.getAuthor(), topic.getCourse());
     }
 
     public Topic toTopic(TopicDTO topicDTO) {
         return  Topic.builder()
+                .id(topicDTO.id())
                 .title(topicDTO.title())
                 .message(topicDTO.message())
                 .status(topicDTO.status())
